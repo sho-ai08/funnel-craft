@@ -23,6 +23,7 @@ const SidePanel = () => {
   const setLinkCreationSource = useStore((state) => state.setLinkCreationSource)
   const triggerResetView = useStore((state) => state.triggerResetView)
   const triggerAutoFit = useStore((state) => state.triggerAutoFit)
+  const applyAutoLayout = useStore((state) => state.applyAutoLayout)
 
   const handleAddNode = () => {
     addNode({
@@ -173,6 +174,9 @@ const SidePanel = () => {
       <div className="panel-section">
         <h2 className="panel-title">ビューコントロール</h2>
         <div className="flex flex-col gap-2">
+          <button onClick={applyAutoLayout} className="btn btn-primary">
+            ✨ 自動レイアウト
+          </button>
           <button onClick={triggerResetView} className="btn btn-secondary">
             🔄 ビューをリセット
           </button>

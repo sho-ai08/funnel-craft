@@ -31,6 +31,7 @@ interface StoreState {
   triggerResetView: () => void
   triggerAutoFit: () => void
   toggleSidePanel: () => void
+  applyAutoLayout: () => void
 
   // プロジェクト操作
   loadProject: (nodes: Node[], links: Link[]) => void
@@ -195,6 +196,87 @@ export const useStore = create<StoreState>((set, get) => ({
         isSidePanelOpen: !state.ui.isSidePanelOpen,
       },
     }))
+  },
+
+  applyAutoLayout: () => {
+    const state = get()
+    const { nodes, links } = state
+
+    if (nodes.length === 0) return
+
+    // Calculate node levels based on link structure
+    const nodeLevels = new Map<string, number>()
+    const nodesByCategory = {
+      traffic: nodes.filter((n) => n.category === 'traffic'),
+      cashpoint: nodes.filter((n) => n.category === 'cashpoint'),
+    }
+
+    // Initialize all nodes to level 0
+    nodes.forEach((node) => nodeLevels.set(node.id, 0))
+
+    // Calculate levels based on links (BFS approach)
+    let changed = true
+    let iterations = 0
+    const maxIterations = 100
+
+    while (changed && iterations < maxIterations) {
+      changed = false
+      iterations++
+
+      links.forEach((link) => {
+        const sourceLevel = nodeLevels.get(link.source) || 0
+        const targetLevel = nodeLevels.get(link.target) || 0
+        const newTargetLevel = sourceLevel + 1
+
+        if (newTargetLevel > targetLevel) {
+          nodeLevels.set(link.target, newTargetLevel)
+          changed = true
+        }
+      })
+    }
+
+    // Group nodes by level and category
+    const levelGroups: Map<number, { traffic: string[]; cashpoint: string[] }> = new Map()
+
+    nodes.forEach((node) => {
+      const level = nodeLevels.get(node.id) || 0
+      if (!levelGroups.has(level)) {
+        levelGroups.set(level, { traffic: [], cashpoint: [] })
+      }
+      levelGroups.get(level)![node.category].push(node.id)
+    })
+
+    // Calculate positions
+    const levelSpacing = 5 // Distance between levels
+    const nodeSpacing = 3 // Distance between nodes in same level
+    const maxLevel = Math.max(...Array.from(nodeLevels.values()))
+
+    nodes.forEach((node) => {
+      const level = nodeLevels.get(node.id) || 0
+      const levelGroup = levelGroups.get(level)!
+      const categoryNodes = levelGroup[node.category]
+      const indexInCategory = categoryNodes.indexOf(node.id)
+      const categoryCount = categoryNodes.length
+
+      // X: Level-based (left to right progression)
+      const x = (level - maxLevel / 2) * levelSpacing
+
+      // Y: Spread nodes vertically within level
+      const yOffset = (indexInCategory - (categoryCount - 1) / 2) * nodeSpacing
+      const y = yOffset
+
+      // Z: Separate traffic (negative) from cashpoint (positive)
+      const z = node.category === 'traffic' ? -3 : 3
+
+      // Update node position
+      set((state) => ({
+        nodes: state.nodes.map((n) =>
+          n.id === node.id
+            ? { ...n, position: { x, y, z } }
+            : n
+        ),
+      }))
+    })
   },
 
   // プロジェクト操作

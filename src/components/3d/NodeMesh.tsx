@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
-import { Mesh } from 'three'
-import { useFrame, ThreeEvent } from '@react-three/fiber'
+import { Mesh, Vector3 } from 'three'
+import { useFrame, ThreeEvent, useThree } from '@react-three/fiber'
 import { Text } from '@react-three/drei'
 import { Node, NODE_COLORS } from '../../types'
 import { useStore } from '../../store/useStore'
@@ -12,6 +12,10 @@ interface NodeMeshProps {
 const NodeMesh = ({ node }: NodeMeshProps) => {
   const meshRef = useRef<Mesh>(null)
   const [hovered, setHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragPlane] = useState(() => new Vector3(0, 1, 0)) // Y-up plane normal
+
+  const { camera, gl } = useThree()
 
   const selectedNodeId = useStore((state) => state.ui.selectedNodeId)
   const selectNode = useStore((state) => state.selectNode)
@@ -20,15 +24,60 @@ const NodeMesh = ({ node }: NodeMeshProps) => {
   const setLinkCreationSource = useStore((state) => state.setLinkCreationSource)
   const setLinkCreationMode = useStore((state) => state.setLinkCreationMode)
   const addLink = useStore((state) => state.addLink)
+  const updateNode = useStore((state) => state.updateNode)
 
   const isSelected = selectedNodeId === node.id
 
   // 微細な回転アニメーション
   useFrame(() => {
-    if (meshRef.current && !isSelected) {
+    if (meshRef.current && !isSelected && !isDragging) {
       meshRef.current.rotation.y += 0.005
     }
   })
+
+  const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
+    e.stopPropagation()
+
+    // リンク作成モード時、または右クリック時はドラッグ無効
+    if (isLinkCreationMode || e.button === 2) {
+      return
+    }
+
+    // Shiftキー押下でドラッグモード開始
+    if (e.shiftKey) {
+      setIsDragging(true)
+      gl.domElement.style.cursor = 'grabbing'
+      // ドラッグ中はOrbitControlsを無効化するためにpointerイベントをキャプチャ
+      ;(e.target as any).setPointerCapture(e.pointerId)
+    }
+  }
+
+  const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
+    if (!isDragging) return
+    e.stopPropagation()
+
+    // マウス位置からレイを飛ばして、ドラッグ平面との交点を計算
+    const point = e.point
+
+    // ノードの現在のY座標を維持しながらX,Z座標を更新
+    updateNode(node.id, {
+      position: {
+        x: point.x,
+        y: node.position.y,
+        z: point.z,
+      },
+    })
+  }
+
+  const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
+    if (isDragging) {
+      setIsDragging(false)
+      gl.domElement.style.cursor = 'pointer'
+      ;(e.target as any).releasePointerCapture(e.pointerId)
+      e.stopPropagation()
+      return
+    }
+  }
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation()
@@ -59,13 +108,17 @@ const NodeMesh = ({ node }: NodeMeshProps) => {
 
   const handlePointerOver = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation()
-    setHovered(true)
-    document.body.style.cursor = 'pointer'
+    if (!isDragging) {
+      setHovered(true)
+      gl.domElement.style.cursor = e.shiftKey ? 'grab' : 'pointer'
+    }
   }
 
   const handlePointerOut = () => {
-    setHovered(false)
-    document.body.style.cursor = 'default'
+    if (!isDragging) {
+      setHovered(false)
+      gl.domElement.style.cursor = 'default'
+    }
   }
 
   const baseColor = NODE_COLORS[node.type]
@@ -77,6 +130,9 @@ const NodeMesh = ({ node }: NodeMeshProps) => {
       <mesh
         ref={meshRef}
         onClick={handleClick}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         scale={scale}
