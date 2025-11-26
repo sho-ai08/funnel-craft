@@ -2,10 +2,18 @@ import { useStore } from '../../store/useStore'
 
 const SidePanel = () => {
   const nodes = useStore((state) => state.nodes)
+  const links = useStore((state) => state.links)
   const addNode = useStore((state) => state.addNode)
   const selectNode = useStore((state) => state.selectNode)
   const setEditPanelOpen = useStore((state) => state.setEditPanelOpen)
   const selectedNodeId = useStore((state) => state.ui.selectedNodeId)
+  const selectedLinkId = useStore((state) => state.ui.selectedLinkId)
+  const deleteLink = useStore((state) => state.deleteLink)
+
+  const isLinkCreationMode = useStore((state) => state.ui.isLinkCreationMode)
+  const linkCreationSourceId = useStore((state) => state.ui.linkCreationSourceId)
+  const setLinkCreationMode = useStore((state) => state.setLinkCreationMode)
+  const setLinkCreationSource = useStore((state) => state.setLinkCreationSource)
 
   const handleAddNode = () => {
     addNode({
@@ -29,6 +37,39 @@ const SidePanel = () => {
     }
   }
 
+  const handleToggleLinkMode = () => {
+    if (isLinkCreationMode) {
+      // モードOFF
+      setLinkCreationMode(false)
+      setLinkCreationSource(null)
+    } else {
+      // モードON
+      setLinkCreationMode(true)
+      setLinkCreationSource(null)
+    }
+  }
+
+  const handleCancelLinkMode = () => {
+    setLinkCreationMode(false)
+    setLinkCreationSource(null)
+  }
+
+  const handleDeleteSelectedLink = () => {
+    if (selectedLinkId) {
+      if (window.confirm('このリンクを削除しますか？')) {
+        deleteLink(selectedLinkId)
+      }
+    }
+  }
+
+  const getSourceNodeTitle = () => {
+    if (linkCreationSourceId) {
+      const node = nodes.find((n) => n.id === linkCreationSourceId)
+      return node ? node.title : '不明'
+    }
+    return null
+  }
+
   return (
     <div className="side-panel">
       <div className="panel-section">
@@ -40,11 +81,55 @@ const SidePanel = () => {
         </button>
 
         {/* 選択ノード編集ボタン */}
-        {selectedNodeId && (
+        {selectedNodeId && !isLinkCreationMode && (
           <button onClick={handleEditSelected} className="btn btn-secondary mt-2">
             選択ノードを編集
           </button>
         )}
+      </div>
+
+      {/* リンク管理 */}
+      <div className="panel-section">
+        <h2 className="panel-title">リンク管理</h2>
+
+        {/* リンク作成モードトグル */}
+        {!isLinkCreationMode && (
+          <button onClick={handleToggleLinkMode} className="btn btn-primary">
+            🔗 リンク作成モード
+          </button>
+        )}
+
+        {/* リンク作成モード中 */}
+        {isLinkCreationMode && (
+          <div className="link-creation-panel">
+            <div className="link-status">
+              {!linkCreationSourceId ? (
+                <p className="status-text">開始ノードをクリック</p>
+              ) : (
+                <div>
+                  <p className="status-text">
+                    開始: <strong>{getSourceNodeTitle()}</strong>
+                  </p>
+                  <p className="status-text">終了ノードをクリック</p>
+                </div>
+              )}
+            </div>
+            <button onClick={handleCancelLinkMode} className="btn btn-secondary">
+              キャンセル
+            </button>
+          </div>
+        )}
+
+        {/* 選択リンク削除ボタン */}
+        {selectedLinkId && !isLinkCreationMode && (
+          <button onClick={handleDeleteSelectedLink} className="btn btn-danger mt-2">
+            選択リンクを削除
+          </button>
+        )}
+
+        <div className="mt-2 text-sm text-gray-400">
+          リンク数: {links.length}
+        </div>
       </div>
 
       {/* ノード一覧 */}

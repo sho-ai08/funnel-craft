@@ -1,16 +1,18 @@
 import { Canvas, ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Grid } from '@react-three/drei'
-import TestNodes from './TestNodes'
+import SceneObjects from './TestNodes'
 import { useStore } from '../../store/useStore'
 
 const Scene = () => {
   const selectNode = useStore((state) => state.selectNode)
+  const selectLink = useStore((state) => state.selectLink)
 
   const handleBackgroundClick = (e: ThreeEvent<MouseEvent>) => {
     // 背景クリックで選択解除
     if (e.delta < 2) {
       // deltaが小さい = ドラッグではなくクリック
       selectNode(null)
+      selectLink(null)
     }
   }
 
@@ -51,8 +53,8 @@ const Scene = () => {
         {/* Axis Helper (development only) */}
         <axesHelper args={[5]} />
 
-        {/* Test Nodes */}
-        <TestNodes />
+        {/* Scene Objects (Nodes & Links) */}
+        <SceneObjects />
       </Canvas>
     </div>
   )

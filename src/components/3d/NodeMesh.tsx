@@ -15,6 +15,12 @@ const NodeMesh = ({ node }: NodeMeshProps) => {
 
   const selectedNodeId = useStore((state) => state.ui.selectedNodeId)
   const selectNode = useStore((state) => state.selectNode)
+  const isLinkCreationMode = useStore((state) => state.ui.isLinkCreationMode)
+  const linkCreationSourceId = useStore((state) => state.ui.linkCreationSourceId)
+  const setLinkCreationSource = useStore((state) => state.setLinkCreationSource)
+  const setLinkCreationMode = useStore((state) => state.setLinkCreationMode)
+  const addLink = useStore((state) => state.addLink)
+
   const isSelected = selectedNodeId === node.id
 
   // 微細な回転アニメーション
@@ -26,7 +32,29 @@ const NodeMesh = ({ node }: NodeMeshProps) => {
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation()
-    selectNode(node.id)
+
+    // リンク作成モードの場合
+    if (isLinkCreationMode) {
+      if (!linkCreationSourceId) {
+        // 開始ノードを設定
+        setLinkCreationSource(node.id)
+      } else {
+        // 終了ノードでリンク作成
+        if (linkCreationSourceId !== node.id) {
+          // 自分自身へのリンクは作成しない
+          addLink({
+            source: linkCreationSourceId,
+            target: node.id,
+          })
+        }
+        // リンク作成モード終了
+        setLinkCreationMode(false)
+        setLinkCreationSource(null)
+      }
+    } else {
+      // 通常モード：ノード選択
+      selectNode(node.id)
+    }
   }
 
   const handlePointerOver = (e: ThreeEvent<PointerEvent>) => {

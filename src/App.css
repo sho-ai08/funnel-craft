@@ -331,3 +331,27 @@
 .text-xl {
   font-size: 1.25rem;
 }
+
+/* Link Creation Panel */
+.link-creation-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.link-status {
+  background: #1a1a1a;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid #444;
+}
+
+.status-text {
+  color: #ddd;
+  font-size: 0.875rem;
+  margin: 0.25rem 0;
+}
+
+.status-text strong {
+  color: #667eea;
+}
