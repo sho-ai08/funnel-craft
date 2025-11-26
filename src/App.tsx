@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import './App.css'
 import Scene from './components/3d/Scene'
+import SidePanel from './components/ui/SidePanel'
+import NodeEditPanel from './components/ui/NodeEditPanel'
 import { useStore } from './store/useStore'
 import { sampleNodes } from './utils/sampleData'
 
@@ -21,11 +23,15 @@ function App() {
     <div className="app">
       <header className="header">
         <h1 className="title">マーケティング導線3D可視化アプリ</h1>
-        <p className="subtitle">Phase 3: データ構造と状態管理実装中... (ノード数: {nodes.length})</p>
+        <p className="subtitle">Phase 4: ノード管理機能実装中... (ノード数: {nodes.length})</p>
       </header>
-      <main className="scene-container">
-        <Scene />
+      <main className="main-content">
+        <SidePanel />
+        <div className="scene-container">
+          <Scene />
+        </div>
       </main>
+      <NodeEditPanel />
     </div>
   )
 }

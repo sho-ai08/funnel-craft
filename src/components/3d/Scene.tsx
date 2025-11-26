@@ -1,8 +1,19 @@
-import { Canvas } from '@react-three/fiber'
+import { Canvas, ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, Grid } from '@react-three/drei'
 import TestNodes from './TestNodes'
+import { useStore } from '../../store/useStore'
 
 const Scene = () => {
+  const selectNode = useStore((state) => state.selectNode)
+
+  const handleBackgroundClick = (e: ThreeEvent<MouseEvent>) => {
+    // 背景クリックで選択解除
+    if (e.delta < 2) {
+      // deltaが小さい = ドラッグではなくクリック
+      selectNode(null)
+    }
+  }
+
   return (
     <div className="w-full h-full">
       <Canvas
@@ -11,6 +22,7 @@ const Scene = () => {
           fov: 50,
         }}
         style={{ background: '#1a1a1a' }}
+        onClick={handleBackgroundClick}
       >
         {/* Lighting */}
         <ambientLight intensity={0.5} />
