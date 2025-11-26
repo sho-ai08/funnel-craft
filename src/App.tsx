@@ -3,6 +3,8 @@ import './App.css'
 import Scene from './components/3d/Scene'
 import SidePanel from './components/ui/SidePanel'
 import NodeEditPanel from './components/ui/NodeEditPanel'
+import Header from './components/layout/Header'
+import StatusBar from './components/layout/StatusBar'
 import { useStore } from './store/useStore'
 import { sampleNodes } from './utils/sampleData'
 
@@ -11,6 +13,8 @@ function App() {
   const addLink = useStore((state) => state.addLink)
   const nodes = useStore((state) => state.nodes)
   const links = useStore((state) => state.links)
+  const isSidePanelOpen = useStore((state) => state.ui.isSidePanelOpen)
+  const toggleSidePanel = useStore((state) => state.toggleSidePanel)
 
   // 初回マウント時にサンプルデータを追加
   useEffect(() => {
@@ -37,16 +41,21 @@ function App() {
 
   return (
     <div className="app">
-      <header className="header">
-        <h1 className="title">マーケティング導線3D可視化アプリ</h1>
-        <p className="subtitle">Phase 5: リンク管理機能実装中... (ノード数: {nodes.length})</p>
-      </header>
+      <Header />
       <main className="main-content">
-        <SidePanel />
+        {isSidePanelOpen && <SidePanel />}
         <div className="scene-container">
+          <button
+            onClick={toggleSidePanel}
+            className="panel-toggle-btn"
+            title={isSidePanelOpen ? 'サイドパネルを閉じる' : 'サイドパネルを開く'}
+          >
+            {isSidePanelOpen ? '◀' : '▶'}
+          </button>
           <Scene />
         </div>
       </main>
+      <StatusBar />
       <NodeEditPanel />
     </div>
   )

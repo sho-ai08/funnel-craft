@@ -28,6 +28,9 @@ interface StoreState {
   setEditPanelOpen: (open: boolean) => void
   setLinkCreationMode: (active: boolean) => void
   setLinkCreationSource: (nodeId: string | null) => void
+  triggerResetView: () => void
+  triggerAutoFit: () => void
+  toggleSidePanel: () => void
 
   // プロジェクト操作
   loadProject: (nodes: Node[], links: Link[]) => void
@@ -44,6 +47,9 @@ export const useStore = create<StoreState>((set, get) => ({
     isEditPanelOpen: false,
     isLinkCreationMode: false,
     linkCreationSourceId: null,
+    resetViewTrigger: 0,
+    autoFitTrigger: 0,
+    isSidePanelOpen: true,
   },
 
   // ノード操作
@@ -160,6 +166,33 @@ export const useStore = create<StoreState>((set, get) => ({
       ui: {
         ...state.ui,
         linkCreationSourceId: nodeId,
+      },
+    }))
+  },
+
+  triggerResetView: () => {
+    set((state) => ({
+      ui: {
+        ...state.ui,
+        resetViewTrigger: state.ui.resetViewTrigger + 1,
+      },
+    }))
+  },
+
+  triggerAutoFit: () => {
+    set((state) => ({
+      ui: {
+        ...state.ui,
+        autoFitTrigger: state.ui.autoFitTrigger + 1,
+      },
+    }))
+  },
+
+  toggleSidePanel: () => {
+    set((state) => ({
+      ui: {
+        ...state.ui,
+        isSidePanelOpen: !state.ui.isSidePanelOpen,
       },
     }))
   },

@@ -51,6 +51,9 @@ export interface UIState {
   isEditPanelOpen: boolean
   isLinkCreationMode: boolean
   linkCreationSourceId: string | null
+  resetViewTrigger: number
+  autoFitTrigger: number
+  isSidePanelOpen: boolean
 }
 
 // ノードの色定義
