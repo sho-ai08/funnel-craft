@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Vector3 } from 'three'
+import { Vector3, Quaternion } from 'three'
 import { Line } from '@react-three/drei'
 import { ThreeEvent } from '@react-three/fiber'
 import { useStore } from '../../store/useStore'
@@ -24,37 +24,47 @@ const LinkMesh = ({ link }: LinkMeshProps) => {
   // ノードが存在しない場合は何も表示しない
   if (!sourceNode || !targetNode) return null
 
-  const sourcePos = new Vector3(
+  // 位置計算をuseMemoで最適化（ノード位置が変わった時のみ再計算）
+  const { sourcePos, targetPos, arrowPosition, arrowRotation } = useMemo(() => {
+    const src = new Vector3(
+      sourceNode.position.x,
+      sourceNode.position.y,
+      sourceNode.position.z
+    )
+    const tgt = new Vector3(
+      targetNode.position.x,
+      targetNode.position.y,
+      targetNode.position.z
+    )
+
+    // 矢印の方向
+    const dir = new Vector3().subVectors(tgt, src).normalize()
+
+    // 矢印の位置（ターゲットノードの手前）
+    const offset = 0.6 // ノードの半径 + 少し余裕
+    const arrPos = new Vector3()
+      .copy(tgt)
+      .sub(dir.clone().multiplyScalar(offset))
+
+    // 矢印の回転を計算
+    const up = new Vector3(0, 1, 0)
+    const quaternion = new Quaternion()
+    quaternion.setFromUnitVectors(up, dir)
+
+    return {
+      sourcePos: src,
+      targetPos: tgt,
+      arrowPosition: arrPos,
+      arrowRotation: quaternion,
+    }
+  }, [
     sourceNode.position.x,
     sourceNode.position.y,
-    sourceNode.position.z
-  )
-  const targetPos = new Vector3(
+    sourceNode.position.z,
     targetNode.position.x,
     targetNode.position.y,
-    targetNode.position.z
-  )
-
-  // 矢印の方向と位置を計算
-  const direction = useMemo(() => {
-    return new Vector3().subVectors(targetPos, sourcePos).normalize()
-  }, [sourcePos, targetPos])
-
-  // 矢印の位置（ターゲットノードの手前）
-  const arrowPosition = useMemo(() => {
-    const offset = 0.6 // ノードの半径 + 少し余裕
-    return new Vector3()
-      .copy(targetPos)
-      .sub(direction.clone().multiplyScalar(offset))
-  }, [targetPos, direction])
-
-  // 矢印の回転を計算
-  const arrowRotation = useMemo(() => {
-    const up = new Vector3(0, 1, 0)
-    const quaternion = new (window as any).THREE.Quaternion()
-    quaternion.setFromUnitVectors(up, direction)
-    return quaternion
-  }, [direction])
+    targetNode.position.z,
+  ])
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation()
