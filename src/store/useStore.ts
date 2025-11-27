@@ -290,6 +290,9 @@ export const useStore = create<StoreState>((set, get) => ({
         isEditPanelOpen: false,
         isLinkCreationMode: false,
         linkCreationSourceId: null,
+        resetViewTrigger: 0,
+        autoFitTrigger: 0,
+        isSidePanelOpen: true,
       },
     })
   },
