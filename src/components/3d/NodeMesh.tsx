@@ -153,7 +153,8 @@ const NodeMesh = ({ node }: NodeMeshProps) => {
         anchorY="middle"
         outlineWidth={0.02}
         outlineColor="#000000"
-        font="https://fonts.gstatic.com/s/notosansjp/v42/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFBEi75vY0rw-oME.woff"
+        font="/fonts/NotoSansJP-Regular.woff2"
+        characters="あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポッャュョァィゥェォ123456789SNS投稿記事広告商品フロントエンド"
       >
         {node.title}
       </Text>
