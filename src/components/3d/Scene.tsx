@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Canvas, ThreeEvent } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Grid } from '@react-three/drei'
 import SceneObjects from './TestNodes'
 import { useStore } from '../../store/useStore'
@@ -14,13 +14,10 @@ const Scene = () => {
 
   const controlsRef = useRef<OrbitControlsImpl>(null)
 
-  const handleBackgroundClick = (e: ThreeEvent<MouseEvent>) => {
+  const handleBackgroundClick = () => {
     // 背景クリックで選択解除
-    if (e.delta < 2) {
-      // deltaが小さい = ドラッグではなくクリック
-      selectNode(null)
-      selectLink(null)
-    }
+    selectNode(null)
+    selectLink(null)
   }
 
   // Reset view handler
@@ -71,7 +68,7 @@ const Scene = () => {
           fov: 50,
         }}
         style={{ background: '#1a1a1a' }}
-        onClick={handleBackgroundClick}
+        onPointerMissed={handleBackgroundClick}
       >
         {/* Lighting */}
         <ambientLight intensity={0.5} />

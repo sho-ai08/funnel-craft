@@ -206,10 +206,6 @@ export const useStore = create<StoreState>((set, get) => ({
 
     // Calculate node levels based on link structure
     const nodeLevels = new Map<string, number>()
-    const nodesByCategory = {
-      traffic: nodes.filter((n) => n.category === 'traffic'),
-      cashpoint: nodes.filter((n) => n.category === 'cashpoint'),
-    }
 
     // Initialize all nodes to level 0
     nodes.forEach((node) => nodeLevels.set(node.id, 0))
@@ -307,6 +303,9 @@ export const useStore = create<StoreState>((set, get) => ({
         isEditPanelOpen: false,
         isLinkCreationMode: false,
         linkCreationSourceId: null,
+        resetViewTrigger: 0,
+        autoFitTrigger: 0,
+        isSidePanelOpen: true,
       },
     })
   },

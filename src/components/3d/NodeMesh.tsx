@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Mesh, Vector3 } from 'three'
+import { Mesh } from 'three'
 import { useFrame, ThreeEvent, useThree } from '@react-three/fiber'
 import { Text } from '@react-three/drei'
 import { Node, NODE_COLORS } from '../../types'
@@ -13,9 +13,8 @@ const NodeMesh = ({ node }: NodeMeshProps) => {
   const meshRef = useRef<Mesh>(null)
   const [hovered, setHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
-  const [dragPlane] = useState(() => new Vector3(0, 1, 0)) // Y-up plane normal
 
-  const { camera, gl } = useThree()
+  const { gl } = useThree()
 
   const selectedNodeId = useStore((state) => state.ui.selectedNodeId)
   const selectNode = useStore((state) => state.selectNode)

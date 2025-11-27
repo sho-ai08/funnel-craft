@@ -19,11 +19,8 @@ function App() {
   // 初回マウント時にサンプルデータを追加
   useEffect(() => {
     if (nodes.length === 0) {
-      const createdNodes: string[] = []
       sampleNodes.forEach((node) => {
         addNode(node)
-        // ノードIDを後で取得するため、一時的にIDを保存
-        // 実際には addNode が返す ID を使うべきですが、ここでは簡易的に
       })
     }
 

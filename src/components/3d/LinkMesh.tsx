@@ -1,5 +1,5 @@
-import { useRef, useMemo, useState } from 'react'
-import { Vector3, BufferGeometry, ConeGeometry } from 'three'
+import { useMemo, useState } from 'react'
+import { Vector3 } from 'three'
 import { Line } from '@react-three/drei'
 import { ThreeEvent } from '@react-three/fiber'
 import { useStore } from '../../store/useStore'
@@ -38,10 +38,6 @@ const LinkMesh = ({ link }: LinkMeshProps) => {
   // 矢印の方向と位置を計算
   const direction = useMemo(() => {
     return new Vector3().subVectors(targetPos, sourcePos).normalize()
-  }, [sourcePos, targetPos])
-
-  const distance = useMemo(() => {
-    return sourcePos.distanceTo(targetPos)
   }, [sourcePos, targetPos])
 
   // 矢印の位置（ターゲットノードの手前）
