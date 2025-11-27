@@ -153,6 +153,7 @@ const NodeMesh = ({ node }: NodeMeshProps) => {
         anchorY="middle"
         outlineWidth={0.02}
         outlineColor="#000000"
+        font="https://fonts.gstatic.com/s/notosansjp/v42/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFBEi75vY0rw-oME.woff"
       >
         {node.title}
       </Text>
