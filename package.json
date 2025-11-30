@@ -1,17 +1,35 @@
 {
-  "name": "3dflow-marketing-visualizer",
+  "name": "funnel-craft",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Funnel Craft - マーケティングファネルを2D/3D空間で可視化・編集し、成果をシミュレーションできるデスクトップアプリケーション",
+  "author": "Claude Code",
+  "license": "MIT",
+  "keywords": [
+    "marketing",
+    "funnel",
+    "visualization",
+    "3d",
+    "react",
+    "three.js",
+    "typescript"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && cp dist/index.html dist/app.html",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
   "dependencies": {
     "@react-three/drei": "^9.92.0",
     "@react-three/fiber": "^8.15.0",
+    "@tauri-apps/api": "^2.9.0",
+    "@tauri-apps/plugin-dialog": "^2.4.2",
+    "@tauri-apps/plugin-fs": "^2.4.4",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.4",
     "nanoid": "^5.1.6",
@@ -23,6 +41,7 @@
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@tailwindcss/postcss": "^4.1.17",
+    "@tauri-apps/cli": "^2.9.4",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/three": "^0.181.0",
