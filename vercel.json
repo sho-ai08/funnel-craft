@@ -1,14 +1,6 @@
 {
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/download/index.html"
-    },
-    {
-      "source": "/app",
-      "destination": "/app.html"
-    }
-  ],
+  "buildCommand": "cp download/index.html public/index.html",
+  "outputDirectory": "public",
   "headers": [
     {
       "source": "/(.*)",
