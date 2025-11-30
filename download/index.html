@@ -164,6 +164,20 @@
       line-height: 1.6;
     }
 
+    .alert-content code {
+      background: rgba(0, 102, 255, 0.08);
+      color: var(--primary-blue);
+      padding: 2px 8px;
+      font-size: 13px;
+      font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+      letter-spacing: 0;
+    }
+
+    .alert-content strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
     /* Features Section */
     .features {
       padding: 100px 0;
@@ -425,10 +439,17 @@
         <p class="version-info">Version 1.0.0 | macOS Apple Silicon | 5.3MB</p>
 
         <div class="alert-box">
-          <div class="alert-title">初回起動時の注意事項</div>
+          <div class="alert-title">⚠️「アプリが壊れている」というエラーが表示される場合</div>
           <div class="alert-content">
-            macOSのセキュリティ機能により、初回起動時に警告が表示される場合があります。<br>
-            アプリを右クリック → 「開く」を選択することで起動できます。
+            macOSのセキュリティ機能により、初回起動時にエラーが表示される場合があります。<br><br>
+            <strong>解決方法（どちらか1つ）:</strong><br><br>
+
+            <strong>方法1: 修正スクリプトを実行（推奨）</strong><br>
+            ZIPに同梱の「<code>fix-app-permissions.sh</code>」をダブルクリックで実行してください。<br><br>
+
+            <strong>方法2: 手動で修正</strong><br>
+            ターミナルを開き、以下のコマンドを実行:<br>
+            <code>xattr -cr "/Applications/Funnel Craft.app"</code>
           </div>
         </div>
       </div>
