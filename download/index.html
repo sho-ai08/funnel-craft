@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Funnel Craft - ダウンロード | マーケティングファネル可視化ツール</title>
-  <meta name="description" content="Funnel Craft - マーケティングファネルを2D/3D空間で可視化・編集し、成果をシミュレーションできるデスクトップアプリ（無料）">
+  <title>Funnel Craft - マーケティングファネル可視化ツール</title>
+  <meta name="description" content="Funnel Craft - マーケティングファネルを2D/3D空間で可視化・編集し、成果をシミュレーションできるデスクトップアプリケーション">
   <style>
     * {
       margin: 0;
@@ -12,28 +12,40 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --primary-blue: #0066FF;
+      --dark-blue: #003D99;
+      --light-blue: #4D94FF;
+      --bg-white: #FFFFFF;
+      --bg-light: #F8F9FA;
+      --text-primary: #1A1A1A;
+      --text-secondary: #6B7280;
+      --border-color: #E5E7EB;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
-      line-height: 1.6;
-      color: #1e293b;
-      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Hiragino Kaku Gothic ProN", sans-serif;
+      line-height: 1.7;
+      color: var(--text-primary);
+      background: var(--bg-white);
       min-height: 100vh;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 40px;
     }
 
     /* Header */
     header {
-      background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      padding: 20px 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 24px 0;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
 
     .header-content {
@@ -43,259 +55,343 @@
     }
 
     .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #0284c7;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 32px;
     }
 
     .nav a {
-      margin-left: 30px;
       text-decoration: none;
-      color: #64748b;
+      color: var(--text-secondary);
+      font-size: 15px;
       font-weight: 500;
-      transition: color 0.3s;
+      transition: color 0.2s;
     }
 
     .nav a:hover {
-      color: #0284c7;
+      color: var(--primary-blue);
     }
 
     /* Hero Section */
     .hero {
+      padding: 120px 0 100px;
       text-align: center;
-      padding: 80px 20px;
+      background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-light) 100%);
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(0, 102, 255, 0.08);
+      color: var(--primary-blue);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
     }
 
     .hero h1 {
-      font-size: 48px;
-      font-weight: bold;
-      color: #0284c7;
-      margin-bottom: 20px;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      letter-spacing: -1.5px;
+      line-height: 1.2;
     }
 
-    .hero .subtitle {
+    .hero-subtitle {
       font-size: 20px;
-      color: #64748b;
-      margin-bottom: 40px;
-      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
     }
 
     .download-btn {
       display: inline-block;
-      background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+      background: var(--primary-blue);
       color: white;
-      padding: 18px 50px;
-      font-size: 18px;
-      font-weight: bold;
-      border-radius: 12px;
+      padding: 16px 48px;
+      font-size: 16px;
+      font-weight: 600;
       text-decoration: none;
-      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.3);
-      transition: all 0.3s ease;
-      margin-bottom: 20px;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.3px;
     }
 
     .download-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(2, 132, 199, 0.4);
+      background: var(--dark-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
     }
 
     .version-info {
-      color: #64748b;
+      margin-top: 16px;
       font-size: 14px;
-      margin-top: 10px;
+      color: var(--text-secondary);
+    }
+
+    .alert-box {
+      max-width: 700px;
+      margin: 48px auto 0;
+      padding: 20px 24px;
+      background: rgba(0, 102, 255, 0.03);
+      border: 1px solid rgba(0, 102, 255, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .alert-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary-blue);
+      margin-bottom: 8px;
+    }
+
+    .alert-content {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
     }
 
     /* Features Section */
     .features {
-      background: white;
-      padding: 80px 20px;
-      margin: 40px 0;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      padding: 100px 0;
+      background: var(--bg-white);
     }
 
-    .features h2 {
+    .section-header {
       text-align: center;
-      font-size: 36px;
-      color: #0284c7;
-      margin-bottom: 50px;
+      margin-bottom: 64px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-blue);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-description {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
     }
 
     .feature-card {
-      text-align: center;
-      padding: 30px;
-      background: #f0f9ff;
-      border-radius: 15px;
-      transition: transform 0.3s;
+      padding: 40px 32px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
     }
 
     .feature-card:hover {
-      transform: translateY(-5px);
+      border-color: var(--primary-blue);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
     }
 
     .feature-icon {
-      font-size: 48px;
-      margin-bottom: 20px;
+      width: 48px;
+      height: 48px;
+      background: rgba(0, 102, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 24px;
     }
 
     .feature-card h3 {
-      color: #0284c7;
-      margin-bottom: 15px;
       font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
     }
 
     .feature-card p {
-      color: #64748b;
-      line-height: 1.6;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
     }
 
     /* Installation Section */
     .installation {
-      padding: 80px 20px;
+      padding: 100px 0;
+      background: var(--bg-light);
     }
 
-    .installation h2 {
-      text-align: center;
-      font-size: 36px;
-      color: #0284c7;
-      margin-bottom: 50px;
-    }
-
-    .steps {
-      max-width: 800px;
+    .steps-container {
+      max-width: 900px;
       margin: 0 auto;
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
     }
 
     .step {
       display: flex;
-      align-items: flex-start;
-      margin-bottom: 30px;
-      padding-bottom: 30px;
-      border-bottom: 1px solid #e0f2fe;
+      gap: 32px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      margin-bottom: 24px;
     }
 
     .step:last-child {
-      border-bottom: none;
       margin-bottom: 0;
-      padding-bottom: 0;
     }
 
     .step-number {
-      background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: var(--primary-blue);
       color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
-      margin-right: 20px;
-      flex-shrink: 0;
+      font-size: 20px;
+      font-weight: 700;
     }
 
     .step-content h3 {
-      color: #0284c7;
-      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
     }
 
     .step-content p {
-      color: #64748b;
-      line-height: 1.6;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
     }
 
-    /* System Requirements */
+    /* Requirements Section */
     .requirements {
-      background: white;
-      padding: 80px 20px;
-      margin: 40px 0;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      padding: 100px 0;
+      background: var(--bg-white);
     }
 
-    .requirements h2 {
-      text-align: center;
-      font-size: 36px;
-      color: #0284c7;
-      margin-bottom: 30px;
-    }
-
-    .req-list {
-      max-width: 600px;
+    .req-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 800px;
       margin: 0 auto;
-      list-style: none;
     }
 
-    .req-list li {
-      padding: 15px 20px;
-      margin-bottom: 15px;
-      background: #f0f9ff;
-      border-radius: 10px;
-      color: #0369a1;
+    .req-item {
+      padding: 24px 28px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .req-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      background: rgba(0, 102, 255, 0.1);
+      color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .req-text {
+      font-size: 15px;
+      color: var(--text-primary);
       font-weight: 500;
-    }
-
-    .req-list li::before {
-      content: "✓ ";
-      color: #0284c7;
-      font-weight: bold;
-      margin-right: 10px;
     }
 
     /* Footer */
     footer {
+      padding: 60px 0;
+      background: var(--bg-light);
+      border-top: 1px solid var(--border-color);
       text-align: center;
-      padding: 40px 20px;
-      color: #64748b;
-      background: white;
-      margin-top: 40px;
+    }
+
+    footer p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
     }
 
     footer a {
-      color: #0284c7;
+      color: var(--primary-blue);
       text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
     }
 
     footer a:hover {
-      text-decoration: underline;
+      color: var(--dark-blue);
     }
 
-    /* Alert Box */
-    .alert {
-      background: #fff7ed;
-      border-left: 4px solid #f97316;
-      padding: 20px;
-      margin: 30px auto;
-      max-width: 800px;
-      border-radius: 8px;
+    /* Responsive */
+    @media (max-width: 968px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+      .req-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .alert-title {
-      color: #ea580c;
-      font-weight: bold;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-    }
-
-    .alert-title::before {
-      content: "⚠️";
-      margin-right: 10px;
-    }
-
-    .alert-content {
-      color: #9a3412;
-      line-height: 1.6;
+    @media (max-width: 640px) {
+      .container {
+        padding: 0 24px;
+      }
+      .hero h1 {
+        font-size: 40px;
+      }
+      .hero-subtitle {
+        font-size: 18px;
+      }
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      .step {
+        padding: 24px;
+        gap: 20px;
+      }
     }
   </style>
 </head>
@@ -303,7 +399,7 @@
   <header>
     <div class="container">
       <div class="header-content">
-        <div class="logo">🎯 Funnel Craft</div>
+        <div class="logo">Funnel Craft</div>
         <nav class="nav">
           <a href="#features">機能</a>
           <a href="#installation">インストール</a>
@@ -313,117 +409,170 @@
     </div>
   </header>
 
-  <div class="container">
+  <main>
     <!-- Hero Section -->
     <section class="hero">
-      <h1>Funnel Craft</h1>
-      <p class="subtitle">
-        マーケティングファネルを2D/3D空間で可視化・編集し、<br>
-        成果をシミュレーションできるデスクトップアプリケーション
-      </p>
-      <a href="/Funnel_Craft_v1.0.0_macOS.zip" class="download-btn">
-        📥 無料ダウンロード
-      </a>
-      <p class="version-info">Version 1.0.0 | macOS (Apple Silicon) | 5.3MB</p>
+      <div class="container">
+        <div class="hero-tag">Marketing Funnel Visualization</div>
+        <h1>Funnel Craft</h1>
+        <p class="hero-subtitle">
+          マーケティングファネルを2D/3D空間で可視化・編集し、<br>
+          成果をシミュレーションできるデスクトップアプリケーション
+        </p>
+        <a href="/Funnel_Craft_v1.0.0_macOS.zip" class="download-btn">
+          無料ダウンロード
+        </a>
+        <p class="version-info">Version 1.0.0 | macOS Apple Silicon | 5.3MB</p>
 
-      <div class="alert">
-        <div class="alert-title">初回起動時の注意</div>
-        <div class="alert-content">
-          macOSのセキュリティ機能により、初回起動時に警告が表示される場合があります。<br>
-          アプリを<strong>右クリック → 「開く」</strong>を選択することで起動できます。
+        <div class="alert-box">
+          <div class="alert-title">初回起動時の注意事項</div>
+          <div class="alert-content">
+            macOSのセキュリティ機能により、初回起動時に警告が表示される場合があります。<br>
+            アプリを右クリック → 「開く」を選択することで起動できます。
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Features Section -->
     <section id="features" class="features">
-      <h2>主な機能</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🎨</div>
-          <h3>2D/3D可視化</h3>
-          <p>マーケティングファネルを直感的な2D/3D空間で可視化。切り替えも自由自在。</p>
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Features</div>
+          <h2 class="section-title">主な機能</h2>
+          <p class="section-description">
+            直感的なインターフェースで、マーケティングファネルの設計・分析を効率化
+          </p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>ノード・リンク編集</h3>
-          <p>集客ポイントや商品を自由に配置し、導線をビジュアルに設計できます。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🧮</div>
-          <h3>ファネル分析</h3>
-          <p>各ノードのメトリクスを入力するだけで、売上をシミュレーション。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📤</div>
-          <h3>エクスポート機能</h3>
-          <p>PNG、PDF、CSV形式でエクスポート。プレゼンや分析に活用。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">💾</div>
-          <h3>プロジェクト管理</h3>
-          <p>作成したファネルをJSON形式で保存・読み込み。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">⌨️</div>
-          <h3>キーボード操作</h3>
-          <p>Delete、Escapeなどのショートカットで効率的に編集。</p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>2D/3D可視化</h3>
+            <p>マーケティングファネルを直感的な2D/3D空間で可視化。ワンクリックで切り替え可能。</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">✏️</div>
+            <h3>ノード・リンク編集</h3>
+            <p>集客ポイントや商品を自由に配置し、導線をビジュアルに設計。</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📈</div>
+            <h3>ファネル分析</h3>
+            <p>各ノードのメトリクスを入力するだけで、売上を自動計算。</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>エクスポート機能</h3>
+            <p>PNG、PDF、CSV形式でエクスポート。プレゼンや分析に活用。</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">💾</div>
+            <h3>プロジェクト管理</h3>
+            <p>作成したファネルをJSON形式で保存・読み込み。</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">⌨️</div>
+            <h3>キーボード操作</h3>
+            <p>Delete、Escapeなどのショートカットで効率的に編集。</p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Installation Section -->
     <section id="installation" class="installation">
-      <h2>インストール方法</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>ダウンロード</h3>
-            <p>上部の「無料ダウンロード」ボタンからZIPファイルをダウンロードします。</p>
-          </div>
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">Installation</div>
+          <h2 class="section-title">インストール方法</h2>
+          <p class="section-description">
+            わずか4ステップで、すぐに使い始められます
+          </p>
         </div>
-        <div class="step">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>解凍</h3>
-            <p>ダウンロードしたZIPファイルをダブルクリックして解凍します。</p>
+
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>ダウンロード</h3>
+              <p>上部の「無料ダウンロード」ボタンからZIPファイルをダウンロードします。</p>
+            </div>
           </div>
-        </div>
-        <div class="step">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>アプリケーションフォルダへ移動</h3>
-            <p>解凍された「Funnel Craft.app」を「アプリケーション」フォルダにドラッグ&ドロップします。</p>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>解凍</h3>
+              <p>ダウンロードしたZIPファイルをダブルクリックして解凍します。</p>
+            </div>
           </div>
-        </div>
-        <div class="step">
-          <div class="step-number">4</div>
-          <div class="step-content">
-            <h3>起動</h3>
-            <p>初回起動時は<strong>右クリック → 「開く」</strong>を選択してください。以降は通常のダブルクリックで起動できます。</p>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>アプリケーションフォルダへ移動</h3>
+              <p>解凍された「Funnel Craft.app」を「アプリケーション」フォルダにドラッグ&ドロップします。</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h3>起動</h3>
+              <p>初回起動時は右クリック → 「開く」を選択してください。以降は通常のダブルクリックで起動できます。</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- System Requirements -->
+    <!-- Requirements Section -->
     <section id="requirements" class="requirements">
-      <h2>動作環境</h2>
-      <ul class="req-list">
-        <li>macOS 10.15 (Catalina) 以降</li>
-        <li>Apple Silicon Mac (M1 / M2 / M3 等)</li>
-        <li>ディスク空き容量: 15MB以上</li>
-        <li>メモリ: 4GB以上推奨</li>
-      </ul>
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label">System Requirements</div>
+          <h2 class="section-title">動作環境</h2>
+          <p class="section-description">
+            以下のシステム要件を満たすデバイスで動作します
+          </p>
+        </div>
+
+        <div class="req-grid">
+          <div class="req-item">
+            <div class="req-icon">✓</div>
+            <div class="req-text">macOS 10.15 (Catalina) 以降</div>
+          </div>
+
+          <div class="req-item">
+            <div class="req-icon">✓</div>
+            <div class="req-text">Apple Silicon Mac (M1 / M2 / M3 等)</div>
+          </div>
+
+          <div class="req-item">
+            <div class="req-icon">✓</div>
+            <div class="req-text">ディスク空き容量: 15MB以上</div>
+          </div>
+
+          <div class="req-item">
+            <div class="req-icon">✓</div>
+            <div class="req-text">メモリ: 4GB以上推奨</div>
+          </div>
+        </div>
+      </div>
     </section>
-  </div>
+  </main>
 
   <footer>
     <div class="container">
       <p>&copy; 2025 Funnel Craft. All rights reserved.</p>
       <p>
-        <a href="https://github.com/sho-ai08/funnel-craft">GitHub</a> |
+        <a href="https://github.com/sho-ai08/funnel-craft">GitHub</a> ·
         <a href="https://github.com/sho-ai08/funnel-craft/issues">サポート</a>
       </p>
     </div>
